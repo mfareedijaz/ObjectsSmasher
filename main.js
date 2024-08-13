@@ -86,6 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
   gameStartCounter.id = "gameStartCounter";
   gameStartCounter.innerHTML = '<span id="counter"></span>';
 
+  // Create the gameover banner
+  const gameOverContainer = document.createElement("div");
+  gameOverContainer.id = "gameOverContainer";
+  gameOverContainer.innerHTML = '<span id="gameOverBanner">GAME OVER</span>';
+
   // Append all elements to the game board
   gameBox.appendChild(gameScoreBlock);
   gameBox.appendChild(upperCircles);
@@ -97,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Append the game board and start counter to the game container
   gameContainer.appendChild(gameBox);
   gameContainer.appendChild(gameStartCounter);
+  gameContainer.appendChild(gameOverContainer);
 
   // Append the game container to the body
   document.body.appendChild(gameContainer);
@@ -135,7 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Optional: Add basic styles (can be moved to a separate CSS file if needed)
   const style = document.createElement("style");
   style.textContent = `
-  * {
+  @import url('https://fonts.googleapis.com/css2?family=Carter+One&family=Lilita+One&display=swap');
+* {
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
@@ -236,10 +243,26 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: translate(-50%, -50%);
 }
 
+#gameOverBanner {
+  height: 113px;
+  width: 433px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  font-family: "Carter One", system-ui;
+  font-weight: 400;
+  font-size: 75px;
+  font-style: normal;
+  color: red;
+  display: none;
+}
+
 #counter {
   font-size: 80px;
   font-weight: bold;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Carter One", system-ui;
   color: red;
 }
   `;
@@ -292,7 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const objects = {
     football: "fa-futbol",
     spider: "fa-spider",
-    dollar: "fa-sack-dollar",
+    fire: "fa-fire",
     ghost: "fa-ghost",
     bomb: "fa-bomb",
   };
@@ -301,9 +324,9 @@ document.addEventListener("DOMContentLoaded", () => {
     player: 'url("https://objectssmashercursors.netlify.app/player.cur"), auto',
     aim: 'url("https://objectssmashercursors.netlify.app/aim.cur"), auto',
     wand: 'url("https://objectssmashercursors.netlify.app/wand.cur"), auto',
-    hammer:
-      'url("https://objectssmashercursors.netlify.app/Hammer.cur.cur"), auto',
+    hammer:'url("https://objectssmashercursors.netlify.app/Hammer.cur"), auto',
     frog: 'url("https://objectssmashercursors.netlify.app/frog.cur"), auto',
+    fireman: 'url("https://objectssmashercursors.netlify.app/fireman.cur"), auto',
   };
 
   const audio = new Audio(
@@ -447,7 +470,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       hideAllBalls();
       setTimeout(() => {
-        alert("Game Over!");
+        const gameOverBanner = document.getElementById("gameOverBanner");
+        gameOverBanner.style.display = "block";
         score.textContent = 0;
         totalBalls.textContent = 0;
       }, 10);
@@ -616,7 +640,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.startGame = startGame;
 });
-
 
 function ObjectSmasher(s1, s2, s3, object, cursor) {
   setTimeout(() => {
